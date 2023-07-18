@@ -7,10 +7,6 @@
  - Pagination avalable 
 
 
-###  Run Locally Clone this Project
-
-[https://github.com/nikhiljangra0954/Hack2skill_Assignment2](https://github.com/SoumyaAdhya007/hack2skill_task_2)
-
 **NPM Package**
 ```
  {
