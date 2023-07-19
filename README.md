@@ -2,7 +2,9 @@
 **Backend:** Node, Express, MongoDB Atlas
 
 ## Features 
- - Save youtube Videos data in mongoDB atlas
+ - Save YouTube video data in MongoDB Atlas.
+ - Check for new videos and add them to MongoDB. (Ensure only new videos are added)
+ - Check if API key quota is exhausted, then use a new API key.
  - Fetch videos data according to published time
  - Pagination avalable 
 
@@ -43,10 +45,10 @@
 ### Pagination 
 -- BY default limit is 10 and page 1
 ```javascript
-GET http://localhost:8088/api/videos?page=1&limit=10
+GET /api/videos?page=1&limit=10
 ```
 
 ### Search with title and description
 ```javascript
-GET http://localhost:8088/api/search?q=messi
+GET /api/search?q=messi
 ```
