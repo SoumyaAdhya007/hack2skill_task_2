@@ -1,6 +1,18 @@
 const { VideoModel } = require("../Model/youtube.model");
 const axios = require("axios");
 require("dotenv").config();
+
+const apiKeys = [
+  process.env.APIKey1,
+  process.env.APIKey2,
+  process.env.APIKey3,
+  process.env.APIKey4,
+  process.env.APIKey5,
+  process.env.APIKey6,
+];
+
+let currentApiKeyIndex = 0;
+
 async function fetchVideos() {
   try {
     const response = await axios.get(
@@ -8,10 +20,10 @@ async function fetchVideos() {
       {
         params: {
           part: "snippet",
-          q: "footbal",
+          q: "modi",
           type: "video",
           maxResults: 20,
-          key: process.env.APIKey,
+          key: apiKeys[currentApiKeyIndex],
         },
       }
     );
@@ -25,9 +37,30 @@ async function fetchVideos() {
       };
     });
 
-    await VideoModel.insertMany(videosdata);
+    const newVideos = [];
+    for (const video of videosdata) {
+      const existingVideo = await VideoModel.findOne({
+        thumbnail: video.thumbnail,
+      });
+      if (!existingVideo) {
+        newVideos.push(video);
+      }
+    }
+    if (newVideos.length > 0) {
+      await VideoModel.insertMany(newVideos);
+    } else {
+      console.log("No new videos to add.");
+    }
   } catch (error) {
     console.error(error.message);
+    if (error.response && error.response.status === 403) {
+      currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+      console.log("Switched to the next API key.");
+    }
   }
 }
+
 setInterval(fetchVideos, 10000);
+module.exports = {
+  fetchVideos,
+};
